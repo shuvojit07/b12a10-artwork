@@ -90,7 +90,7 @@ export default function MyGallery() {
     setArts(newList);
     setDeletingId(normId);
 
-    // helper to try deleting a given id string
+
     async function tryDeleteById(delId) {
       return fetcher(`/items/${encodeURIComponent(delId)}`, {
         method: "DELETE",
@@ -98,10 +98,10 @@ export default function MyGallery() {
     }
 
     try {
-      // find the art object we removed (if still in prev)
+      
       const artObj = prev.find((a) => String(a._id).trim() === normId);
 
-      // try deleting by _id first (normId)
+      
       try {
         const res = await tryDeleteById(normId);
         console.log("[MyGallery] delete response (by _id):", res);
@@ -110,7 +110,7 @@ export default function MyGallery() {
       } catch (err) {
         console.warn("[MyGallery] delete by _id failed:", err);
 
-        // if error indicates not found -> treat as success
+       
         const status = err?.status || (err?.response && err.response.status);
         const msg = err?.message || (err?.response && err.response.data) || "";
 
@@ -121,7 +121,7 @@ export default function MyGallery() {
           artObj.itemId &&
           String(artObj.itemId).trim() !== normId
         ) {
-          // try fallback: maybe API expects itemId instead of _id
+     
           const fallbackId = String(artObj.itemId).trim();
           try {
             const res2 = await tryDeleteById(fallbackId);
@@ -129,13 +129,13 @@ export default function MyGallery() {
             Swal.fire("Deleted!", "Artwork has been removed.", "success");
           } catch (err2) {
             console.error("[MyGallery] delete by itemId also failed:", err2);
-            // rollback
+           
             setArts(prev);
             const msg2 = err2?.message || "Failed to delete artwork";
             Swal.fire("Error", msg2, "error");
           }
         } else {
-          // other errors -> rollback
+         
           setArts(prev);
           const human = err?.message || "Failed to delete artwork";
           Swal.fire("Error", human, "error");
@@ -166,7 +166,6 @@ export default function MyGallery() {
   }
 
   async function handleUpdated() {
-    // reload from server to get canonical data
     await loadMyArtworks();
     handleFormClose();
     Swal.fire("Success", "Changes saved", "success");
