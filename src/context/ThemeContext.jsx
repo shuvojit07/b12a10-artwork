@@ -19,10 +19,8 @@ export function ThemeProvider({ children }) {
 
   useEffect(() => {
     try {
-      // DaisyUI uses data-theme on <html>
+      
       document.documentElement.setAttribute("data-theme", theme);
-
-      // Also sync a `dark` class for Tailwind `dark:` utilities (and general compatibility)
       if (theme === "dark") {
         document.documentElement.classList.add("dark");
       } else {
