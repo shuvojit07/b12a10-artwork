@@ -1,4 +1,3 @@
-// src/pages/Favorites.jsx
 import { useEffect, useState, useCallback } from "react";
 import { fetcher } from "../utils/api";
 import { auth } from "../lib/firebase";
@@ -12,7 +11,6 @@ export default function Favorites() {
 
   const idStr = (v) => (v === undefined || v === null ? "" : String(v));
 
-  // load favorites from server and attach artwork (best-effort)
   const load = useCallback(async () => {
     setLoading(true);
     try {
@@ -37,6 +35,7 @@ export default function Favorites() {
             );
             return { ...f, artwork: art?.data ?? null };
           } catch (err) {
+            console.log(err);
             return { ...f, artwork: null };
           }
         })
@@ -58,8 +57,6 @@ export default function Favorites() {
   useEffect(() => {
     load();
   }, [load]);
-
-  // helper native fetch fallback (inspects status/body)
   async function nativeDelete(url) {
     try {
       const r = await fetch(url, { method: "DELETE" });
@@ -68,6 +65,7 @@ export default function Favorites() {
       try {
         body = text ? JSON.parse(text) : null;
       } catch (e) {
+        console.log(e);
         body = text;
       }
       return { ok: r.ok, status: r.status, body, rawText: text };
@@ -76,7 +74,6 @@ export default function Favorites() {
     }
   }
 
-  // remove favorite (robust)
   async function removeFav(rawId, fallbackItemId = null) {
     const id = idStr(rawId);
     if (!id && !fallbackItemId) {
@@ -84,11 +81,9 @@ export default function Favorites() {
       return;
     }
 
-    // double-delete guard
     if (id && deletingIds.has(id)) return;
     if (!id && fallbackItemId && deletingIds.has(fallbackItemId)) return;
 
-    // confirm
     const ok = await Swal.fire({
       title: "Remove favorite?",
       text: "This will remove the artwork from your favorites.",
@@ -98,12 +93,11 @@ export default function Favorites() {
     });
     if (!ok.isConfirmed) return;
 
-    // pick a key for deletingIds set (prefer _id else itemId)
     const key = id || String(fallbackItemId);
 
     setDeletingIds((s) => new Set(s).add(key));
     const prev = [...favorites];
-    // optimistic remove any favorite matching _id or itemId
+
     setFavorites((favs) =>
       favs.filter(
         (f) =>
@@ -113,16 +107,14 @@ export default function Favorites() {
       )
     );
 
-    // try to delete by provided id first (favorite._id)
     const apiBase = window.__API_BASE__ || "";
     try {
       if (id) {
-        // try using fetcher first
         try {
           await fetcher(`/favorites/${encodeURIComponent(id)}`, {
             method: "DELETE",
           });
-          // success -> re-sync from server
+
           await load();
           Swal.fire("Removed", "Favorite removed.", "success");
           return;
