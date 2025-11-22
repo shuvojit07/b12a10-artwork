@@ -1,13 +1,11 @@
-// src/index.jsx
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import App from './App';
-import { ThemeProvider } from './context/ThemeContext';
-import './index.css';
-import './app.css'; // optional: make sure app.css doesn't override vars undesirably
-
-createRoot(document.getElementById('root')).render(
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App";
+import { ThemeProvider } from "./context/ThemeContext";
+import "./index.css";
+import "./app.css";
+createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ThemeProvider>
       <BrowserRouter>
