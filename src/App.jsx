@@ -1,4 +1,3 @@
-
 import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Explore from "./pages/Explore";
@@ -16,7 +15,6 @@ import "./index.css";
 import "./app.css";
 export default function App() {
   return (
-    // Root layout uses Tailwind colors mapped to CSS vars
     <div className="min-h-screen flex flex-col bg-bg text-body text">
       <Navbar />
       <main className="container flex-1 mx-auto px-4 py-8">
@@ -54,7 +52,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/404" replace />} />
         </Routes>
       </main>
-        <Footer />
+      <Footer />
     </div>
   );
 }
