@@ -1,4 +1,4 @@
-// src/pages/MyGallery.jsx
+
 import { useEffect, useState } from "react";
 import { fetcher } from "../utils/api";
 import { auth } from "../lib/firebase";
@@ -13,10 +13,10 @@ export default function MyGallery() {
   const [showForm, setShowForm] = useState(false);
   const [editingArt, setEditingArt] = useState(null);
 
-  // for optimistic delete: store id being deleted so we can disable buttons
+
   const [deletingId, setDeletingId] = useState(null);
 
-  // listen auth changes so UI updates when user logs in/out
+
   useEffect(() => {
     const unsub = auth.onAuthStateChanged((u) => {
       setUser(u);
@@ -24,7 +24,7 @@ export default function MyGallery() {
     return () => unsub();
   }, []);
 
-  // load artworks for current user
+ 
   async function loadMyArtworks() {
     if (!user || !user.email) {
       setArts([]);
@@ -51,12 +51,12 @@ export default function MyGallery() {
 
   useEffect(() => {
     loadMyArtworks();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [user]);
 
-  // robust optimistic delete
+
   async function handleDelete(id) {
-    // normalize id
+ 
     const rawId = typeof id === "string" ? id : String(id || "");
     const normId = rawId.trim();
     if (!normId) {
@@ -64,7 +64,7 @@ export default function MyGallery() {
       return;
     }
 
-    // prevent double deletion
+
     if (deletingId === normId) return;
 
     const ok = await Swal.fire({
