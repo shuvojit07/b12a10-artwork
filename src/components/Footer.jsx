@@ -1,4 +1,3 @@
-// src/components/Footer.jsx
 export default function Footer() {
   return (
     <footer className="bg-black text-gray-300 mt-10">
@@ -25,10 +24,10 @@ export default function Footer() {
 
           <div>
             <h4 className="font-semibold text-white mb-2">Contact</h4>
-            <p className="text-sm text-gray-400">Email: shuvojittikader@gmail.com</p>
+            <p className="text-sm text-gray-400">
+              Email: shuvojittikader@gmail.com
+            </p>
             <p className="text-sm text-gray-400">Phone: +880 1581866550</p>
-
-           
           </div>
         </div>
 
