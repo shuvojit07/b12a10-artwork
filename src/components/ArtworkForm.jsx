@@ -3,7 +3,7 @@ import { fetcher } from "../utils/api";
 import Swal from "sweetalert2";
 import { auth } from "../lib/firebase";
 
-// Pass an optional onSaved callback from parent so MyGallery can reload after add/update
+//MyGallery can reload after add/update
 export default function ArtworkForm({ artwork, onSaved }) {
   const [form, setForm] = useState({
     imageUrl: "",
@@ -40,14 +40,14 @@ export default function ArtworkForm({ artwork, onSaved }) {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    // ensure user is logged in so we can attach userEmail
+
     const user = auth.currentUser;
     if (!user) {
       return Swal.fire("Not logged in", "You must be logged in to add an artwork.", "warning");
     }
 
     try {
-      // include `image` (backend often expects this) and userEmail for filtering in MyGallery
+      
       const payload = {
         ...form,
         image: form.imageUrl,
@@ -55,7 +55,7 @@ export default function ArtworkForm({ artwork, onSaved }) {
       };
 
       if (artwork?._id) {
-        // Update
+      
         await fetcher(`/items/${artwork._id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -64,7 +64,7 @@ export default function ArtworkForm({ artwork, onSaved }) {
         Swal.fire("Updated!", "Artwork Updated Successfully", "success");
         onSaved && onSaved();
       } else {
-        // Create
+
         await fetcher("/items", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -85,7 +85,6 @@ export default function ArtworkForm({ artwork, onSaved }) {
           visibility: "public",
         });
 
-        // tell parent to reload gallery
         onSaved && onSaved();
       }
     } catch (err) {

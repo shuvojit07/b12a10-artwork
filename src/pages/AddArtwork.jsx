@@ -1,4 +1,4 @@
-// src/pages/ArtworkForm.jsx
+
 import { useState, useEffect } from "react";
 import { fetcher } from "../utils/api";
 import Swal from "sweetalert2";
@@ -62,7 +62,7 @@ export default function ArtworkForm({
 
     try {
       if (artwork && artwork._id) {
-        // UPDATE
+  
         const rawId =
           typeof artwork._id === "string" ? artwork._id : String(artwork._id);
         const id = rawId.trim();
@@ -79,7 +79,7 @@ export default function ArtworkForm({
         if (typeof onCreatedOrUpdated === "function") {
           onCreatedOrUpdated(updated);
         } else {
-          // default: go to details page after update
+    
           navigate(`/items/${id}`);
         }
       } else {
@@ -103,10 +103,9 @@ export default function ArtworkForm({
         Swal.fire("Added!", "Artwork added successfully", "success");
 
         if (typeof onCreatedOrUpdated === "function") {
-          // modal flow: notify parent to reload & close modal
           onCreatedOrUpdated(created);
         } else {
-          // standalone flow: redirect to My Gallery
+     
           navigate("/my-gallery");
         }
       }
