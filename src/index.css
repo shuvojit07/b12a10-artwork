@@ -1,0 +1,27 @@
+@import "tailwindcss";
+@import "tailwindcss/utilities";
+
+
+:root {
+  --bg: #ffffff;
+  --text: #111111;
+  --card: #f6f6f6;
+  --primary: #0b5fff;
+}
+
+/* DaisyUI / dark theme variables */
+[data-theme="dark"] {
+  --bg: #0b1117;
+  --text: #e6eef6;
+  --card: #071122;
+  --primary: #58a6ff;
+}
+
+/* optional global */
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  transition: background .2s ease, color .2s ease;
+}
