@@ -1,4 +1,4 @@
-// src/pages/ArtworkDetails/ArtworkDetails.jsx
+
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetcher } from "../../utils/api";
@@ -40,7 +40,7 @@ export default function ArtworkDetails() {
 
   useEffect(() => {
     load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [id]);
 
   function saveLocalLikeDelta(itemId) {
@@ -68,7 +68,7 @@ export default function ArtworkDetails() {
     }
   }
 
-  // Like: optimistic UI -> server attempts -> local fallback
+
   async function handleLike() {
     if (!art) return;
     if (liking) return;

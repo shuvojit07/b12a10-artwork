@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { fetcher } from "../utils/api";
 import Swal from "sweetalert2";
@@ -35,7 +34,6 @@ export default function ArtworkForm({
         visibility: artwork.visibility || "public",
       });
     } else {
-
       const u = auth.currentUser;
       if (u && (u.displayName || u.email)) {
         setForm((f) => ({ ...f, artistName: u.displayName || u.email }));
@@ -47,10 +45,9 @@ export default function ArtworkForm({
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
- 
   async function nativeGetItem(id) {
     try {
-      const base = window.__API_BASE__ || "http://localhost:4000";
+      const base = window.__API_BASE__ || "https://artwork-servar.vercel.app";
       const r = await fetch(`${base}/items/${encodeURIComponent(id)}`);
       const text = await r.text().catch(() => null);
       let body = null;
@@ -69,7 +66,6 @@ export default function ArtworkForm({
   async function handleSubmit(e) {
     e.preventDefault();
 
-   
     if (!form.title || !form.imageUrl) {
       Swal.fire("Validation", "Title and Image URL are required", "warning");
       return;
@@ -79,13 +75,11 @@ export default function ArtworkForm({
 
     try {
       if (artwork && artwork._id) {
-        
         const rawId =
           typeof artwork._id === "string" ? artwork._id : String(artwork._id);
         const id = rawId.trim();
         if (!id) throw new Error("Invalid artwork id");
 
-     
         let res;
         try {
           res = await fetcher(`/items/${encodeURIComponent(id)}`, {
@@ -94,19 +88,16 @@ export default function ArtworkForm({
             body: JSON.stringify(form),
           });
         } catch (err) {
-         
           console.warn("Artwork PUT failed:", err);
-          
+
           const fallback = await nativeGetItem(id);
           if (fallback.ok && fallback.body && fallback.body.data) {
-            
             const updated = fallback.body.data;
             Swal.fire("Updated!", "Artwork updated (verified).", "success");
             if (typeof onCreatedOrUpdated === "function")
               onCreatedOrUpdated(updated);
             return;
           } else {
-            
             const msg =
               err?.message ||
               (fallback && fallback.body && JSON.stringify(fallback.body)) ||
@@ -122,7 +113,6 @@ export default function ArtworkForm({
         if (typeof onCreatedOrUpdated === "function")
           onCreatedOrUpdated(updated);
       } else {
-
         const u = auth.currentUser;
         const payload = {
           ...form,
@@ -145,7 +135,6 @@ export default function ArtworkForm({
         if (typeof onCreatedOrUpdated === "function")
           onCreatedOrUpdated(created);
 
-      
         setForm({
           imageUrl: "",
           title: "",

@@ -1,5 +1,5 @@
-// src/utils/api.js
-export const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:4000";
+
+export const API_BASE = import.meta.env.VITE_API_BASE || "https://artwork-servar.vercel.app";
 
 function parseJsonSafe(res) {
   return res.text().then(text => {

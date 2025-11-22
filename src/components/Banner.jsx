@@ -10,11 +10,11 @@ import { Link } from "react-router-dom";
  * - Handles different API shapes (array, {items:[]}, {data:[]}, single object)
  *
  * Usage:
- * <Banner apiUrl="http://localhost:4000/items" cta={{ text: "Explore", to: "/gallery" }} />
+ * <Banner apiUrl="https://artwork-servar.vercel.app/items" cta={{ text: "Explore", to: "/gallery" }} />
  */
 
 export default function Banner({
-  apiUrl = "http://localhost:4000/items",
+  apiUrl = "https://artwork-servar.vercel.app/items",
   interval = 4000,
   cta = { text: "Explore", to: "/gallery" }, // pass null to hide CTA
 }) {
@@ -47,7 +47,12 @@ export default function Banner({
         const formatted = arr
           .map((it) => ({
             id: it._id || it.id || `${Date.now()}_${Math.random()}`,
-            img: it.imageUrl || it.img || it.image || it.photo || "/placeholder-banner.jpg",
+            img:
+              it.imageUrl ||
+              it.img ||
+              it.image ||
+              it.photo ||
+              "/placeholder-banner.jpg",
             title: it.title || it.name || it.heading || "",
             subtitle: it.subtitle || it.text || it.description || "",
             link: it.link || it.url || (it._id ? `/artworks/${it._id}` : null),
@@ -55,13 +60,29 @@ export default function Banner({
           // filter out items without any image (optional)
           .filter(Boolean);
 
-        setSlides(formatted.length ? formatted : [
-          { id: "fallback", img: "/placeholder-banner.jpg", title: "Welcome", subtitle: "" }
-        ]);
+        setSlides(
+          formatted.length
+            ? formatted
+            : [
+                {
+                  id: "fallback",
+                  img: "/placeholder-banner.jpg",
+                  title: "Welcome",
+                  subtitle: "",
+                },
+              ]
+        );
       } catch (err) {
         if (err.name !== "AbortError") {
           console.error("Banner loading error:", err);
-          setSlides([{ id: "error", img: "/placeholder-banner.jpg", title: "Could not load banner", subtitle: "" }]);
+          setSlides([
+            {
+              id: "error",
+              img: "/placeholder-banner.jpg",
+              title: "Could not load banner",
+              subtitle: "",
+            },
+          ]);
         }
       } finally {
         setLoading(false);
@@ -84,7 +105,8 @@ export default function Banner({
   // keyboard navigation (left/right) for accessibility
   useEffect(() => {
     function onKey(e) {
-      if (e.key === "ArrowLeft") setIndex((p) => (p - 1 + slides.length) % slides.length);
+      if (e.key === "ArrowLeft")
+        setIndex((p) => (p - 1 + slides.length) % slides.length);
       if (e.key === "ArrowRight") setIndex((p) => (p + 1) % slides.length);
     }
     window.addEventListener("keydown", onKey);
@@ -109,7 +131,9 @@ export default function Banner({
         <article
           key={s.id}
           className={`absolute inset-0 transition-opacity duration-800 ease-in-out ${
-            i === index ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+            i === index
+              ? "opacity-100 z-10"
+              : "opacity-0 z-0 pointer-events-none"
           }`}
           aria-hidden={i !== index}
         >
@@ -118,7 +142,9 @@ export default function Banner({
             src={s.img}
             alt={s.title || `Slide ${i + 1}`}
             className="w-full h-full object-cover"
-            onError={(e) => { e.currentTarget.src = "/placeholder-banner.jpg"; }}
+            onError={(e) => {
+              e.currentTarget.src = "/placeholder-banner.jpg";
+            }}
           />
 
           {/* gradient overlay for text readability */}
@@ -186,7 +212,9 @@ export default function Banner({
       {slides.length > 1 && (
         <>
           <button
-            onClick={() => setIndex((p) => (p - 1 + slides.length) % slides.length)}
+            onClick={() =>
+              setIndex((p) => (p - 1 + slides.length) % slides.length)
+            }
             aria-label="Previous slide"
             className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/40 text-white p-2 rounded-full z-20 hover:bg-black/60 transition"
           >

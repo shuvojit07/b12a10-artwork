@@ -22,7 +22,7 @@ function AdminContent(){
 
   if(authLoading) return <div>Loading...</div>;
 
-  // basic admin check: email in env defined admin list
+ 
   const adminEmails = (import.meta.env.VITE_ADMIN_EMAILS || "").split(",");
   if(!user || !adminEmails.includes(user.email)) return <div>Not authorized</div>;
 
