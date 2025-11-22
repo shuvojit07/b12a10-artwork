@@ -1,4 +1,4 @@
-// src/pages/ArtworkForm.jsx
+
 import { useState, useEffect } from "react";
 import { fetcher } from "../utils/api";
 import Swal from "sweetalert2";
@@ -35,7 +35,7 @@ export default function ArtworkForm({
         visibility: artwork.visibility || "public",
       });
     } else {
-      // prefill artistName from auth if available
+
       const u = auth.currentUser;
       if (u && (u.displayName || u.email)) {
         setForm((f) => ({ ...f, artistName: u.displayName || u.email }));
@@ -47,7 +47,7 @@ export default function ArtworkForm({
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  // native fetch fallback helper to GET an item
+ 
   async function nativeGetItem(id) {
     try {
       const base = window.__API_BASE__ || "http://localhost:4000";
@@ -69,7 +69,7 @@ export default function ArtworkForm({
   async function handleSubmit(e) {
     e.preventDefault();
 
-    // basic validation
+   
     if (!form.title || !form.imageUrl) {
       Swal.fire("Validation", "Title and Image URL are required", "warning");
       return;
@@ -79,13 +79,13 @@ export default function ArtworkForm({
 
     try {
       if (artwork && artwork._id) {
-        // UPDATE flow
+        
         const rawId =
           typeof artwork._id === "string" ? artwork._id : String(artwork._id);
         const id = rawId.trim();
         if (!id) throw new Error("Invalid artwork id");
 
-        // send PUT
+     
         let res;
         try {
           res = await fetcher(`/items/${encodeURIComponent(id)}`, {
@@ -94,19 +94,19 @@ export default function ArtworkForm({
             body: JSON.stringify(form),
           });
         } catch (err) {
-          // log and we'll attempt fallback GET to verify if update actually happened
+         
           console.warn("Artwork PUT failed:", err);
-          // try to GET the item — sometimes server applied update but returned 500
+          
           const fallback = await nativeGetItem(id);
           if (fallback.ok && fallback.body && fallback.body.data) {
-            // treat as success (server has the updated item)
+            
             const updated = fallback.body.data;
             Swal.fire("Updated!", "Artwork updated (verified).", "success");
             if (typeof onCreatedOrUpdated === "function")
               onCreatedOrUpdated(updated);
             return;
           } else {
-            // no fallback success -> surface error
+            
             const msg =
               err?.message ||
               (fallback && fallback.body && JSON.stringify(fallback.body)) ||
@@ -115,7 +115,6 @@ export default function ArtworkForm({
           }
         }
 
-        // If we reached here, fetcher returned (hopefully) a success response
         const updated = res?.data ?? res ?? null;
 
         Swal.fire("Updated!", "Artwork updated successfully", "success");
@@ -123,7 +122,7 @@ export default function ArtworkForm({
         if (typeof onCreatedOrUpdated === "function")
           onCreatedOrUpdated(updated);
       } else {
-        // CREATE flow
+
         const u = auth.currentUser;
         const payload = {
           ...form,
@@ -146,7 +145,7 @@ export default function ArtworkForm({
         if (typeof onCreatedOrUpdated === "function")
           onCreatedOrUpdated(created);
 
-        // reset form (for convenience if the modal remains open)
+      
         setForm({
           imageUrl: "",
           title: "",
