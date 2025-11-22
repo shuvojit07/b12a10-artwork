@@ -1,4 +1,4 @@
-// src/components/Navbar.jsx
+
 import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { auth } from "../lib/firebase";
@@ -106,7 +106,6 @@ export default function Navbar() {
           {privateLinks}
         </div>
 
-        {/* User Section + Theme Toggle */}
         <div className="hidden md:flex items-center gap-4 relative">
           {!user ? (
             <>
@@ -166,7 +165,6 @@ export default function Navbar() {
             </div>
           )}
 
-          {/* Theme Toggle Button */}
           <button
             onClick={toggle}
             className={`ml-4 flex items-center gap-2 px-3 py-1 border rounded hover:bg-purple-50 focus:outline-none ${
